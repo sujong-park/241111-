@@ -70,7 +70,7 @@ public class ui_Kdh extends JFrame {
         btnKdh0222.addActionListener(e -> btnFunc());
         btnPsj.addActionListener(e -> btnFuncPsj());
         btnJhj.addActionListener(e -> Join());
-        btnAsy.addActionListener(e -> btnFunc());
+        btnAsy.addActionListener(e -> btnFuncAsy());
 
         setVisible(true);
     }
