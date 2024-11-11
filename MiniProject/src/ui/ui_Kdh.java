@@ -17,7 +17,9 @@ import dao.DAO_Kdh;
 import dto.Asy_DTO;
 import dto.DTO_Kdh;
 import dto.HJDTO;
+import dto.Kdh2022_dto;
 import dao.HJDAO;
+import dao.Kdh2022_dao;
 
 public class ui_Kdh extends JFrame {
 
@@ -67,7 +69,7 @@ public class ui_Kdh extends JFrame {
         add(listPanel, BorderLayout.CENTER);
 
         btnKdh1018.addActionListener(e -> btnFunc());
-        btnKdh0222.addActionListener(e -> btnFunc());
+        btnKdh0222.addActionListener(e -> btnFunckdh());
         btnPsj.addActionListener(e -> btnFuncPsj());
         btnJhj.addActionListener(e -> Join());
         btnAsy.addActionListener(e -> btnFuncAsy());
@@ -136,6 +138,24 @@ public class ui_Kdh extends JFrame {
 			listModel.addElement(displayText2);
 		}
 	}
+    
+    public void btnFunckdh() {
+    	listModel.clear();
+    	Kdh2022_dao dao= new Kdh2022_dao();
+        ArrayList<Kdh2022_dto> deptList = dao.getEmpList();
+        
+        listModel.addElement("SCOTT 이후에 입사한 직원 리스트");
+        
+        for (Kdh2022_dto dto : deptList) {
+            listModel.addElement(
+            		dto.getEmpno() + " | " + dto.getEname() + " | " + dto.getJob() + " | " + 
+            		dto.getMgr() + " | " + dto.getHiredate() + " | " + dto.getSal() + " | " + 
+            		dto.getComm() + " | " + dto.getDeptno()
+            		);
+        }
+    }
+
+
 
     public static void main(String[] args) {
         new ui_Kdh();
