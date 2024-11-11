@@ -1,13 +1,14 @@
-package DAO;
+package dao;
 
 import java.sql.Connection;
+
 import java.sql.DriverManager;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
 
-import DTO.HJDTO;
+import dto.HJDTO;
 
 public class HJDAO {
 	String driver = "oracle.jdbc.driver.OracleDriver";
