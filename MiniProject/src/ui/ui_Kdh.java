@@ -52,7 +52,7 @@ public class ui_Kdh extends JFrame {
 
         btnKdh1018.addActionListener(e -> btnFunc());
         btnKdh0222.addActionListener(e -> btnFunc());
-        btnPsj.addActionListener(e -> btnFunc());
+        btnPsj.addActionListener(e -> btnFuncPsj());
         btnJhj.addActionListener(e -> btnFunc());
         btnAsy.addActionListener(e -> btnFunc());
 
@@ -65,6 +65,21 @@ public class ui_Kdh extends JFrame {
         ArrayList<DTO_Kdh> deptList = dao.getDeptList();  // DAO에서 직원 및 부서 정보 가져오기
         for (DTO_Kdh dto : deptList) {
             listModel.addElement(dto.getEmpno() + " - " + dto.getEname() + " - " + dto.getDname());
+        }
+    }
+    
+    public void btnFuncPsj() {
+    	listModel.clear();
+        ArrayList<DTO_Kdh> deptList = dao.getEmpList();
+        
+        listModel.addElement("ALLEN 보다 급여가 높은 사원 리스트");
+        
+        for (DTO_Kdh dto : deptList) {
+            listModel.addElement(
+            		dto.getEmpno() + " | " + dto.getEname() + " | " + dto.getJob() + " | " + 
+            		dto.getMgr() + " | " + dto.getHiredate() + " | " + dto.getSal() + " | " + 
+            		dto.getComm() + " | " + dto.getDeptno()
+            		);
         }
     }
 
