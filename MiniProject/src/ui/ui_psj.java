@@ -22,7 +22,7 @@ public class ui_psj extends JFrame {
     DAO_Psj dao = new DAO_Psj();
 
     public ui_psj() {
-        setTitle("회원 정보");
+        setTitle("팀프로젝트");
         setSize(600, 400);
         setLocationRelativeTo(null);
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
@@ -53,9 +53,16 @@ public class ui_psj extends JFrame {
 
     public void btnFunc() {
         listModel.clear();
-        ArrayList<DTO_Psj> deptList = dao.getDeptList();
+        ArrayList<DTO_Psj> deptList = dao.getEmpList();
+        
+        listModel.addElement("ALLEN 보다 급여가 높은 사원 리스트");
+        
         for (DTO_Psj dto : deptList) {
-            listModel.addElement(dto.getDeptno() + " - " + dto.getDname() + " - " + dto.getLoc());
+            listModel.addElement(
+            		dto.getEmpno() + " | " + dto.getEname() + " | " + dto.getJob() + " | " + 
+            		dto.getMgr() + " | " + dto.getHiredate() + " | " + dto.getSal() + " | " + 
+            		dto.getComm() + " | " + dto.getDeptno()
+            		);
         }
     }
 

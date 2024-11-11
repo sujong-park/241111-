@@ -24,19 +24,28 @@ public class DAO_Psj {
         }
     }
 
-    public ArrayList<DTO_Psj> getDeptList() {
+    public ArrayList<DTO_Psj> getEmpList() {
         ArrayList<DTO_Psj> list = new ArrayList<>();
 
-        String sql = "SELECT deptno, dname, loc FROM dept";
+        String sql = "SELECT * FROM emp WHERE sal > (SELECT sal from emp where ename = 'ALLEN') ORDER BY sal";
         try (Connection conn = DriverManager.getConnection(url, userid, passwd);
              PreparedStatement pstmt = conn.prepareStatement(sql);
              ResultSet rs = pstmt.executeQuery()) {
 
             while (rs.next()) {
+                int empno = rs.getInt("empno");
+                String ename = rs.getString("ename");
+                String job = rs.getString("job");
+                int mgr = rs.getInt("mgr");
+                String hiredate = rs.getString("hiredate");
+                int sal = rs.getInt("sal");
+                int comm = rs.getInt("comm");
                 int deptno = rs.getInt("deptno");
-                String dname = rs.getString("dname");
-                String loc = rs.getString("loc");
-                list.add(new DTO_Psj(deptno, dname, loc));
+                
+                list.add(new DTO_Psj(empno, ename, job, mgr, hiredate, sal, comm, deptno));
+
+                
+                
             }
 
         } catch (SQLException e) {
