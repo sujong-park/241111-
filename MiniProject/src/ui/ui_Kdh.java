@@ -2,14 +2,30 @@ package ui;
 
 import java.awt.BorderLayout;
 import java.awt.FlowLayout;
-import javax.swing.*;
 import java.util.ArrayList;
+import java.util.List;
+
+import javax.swing.DefaultListModel;
+import javax.swing.JButton;
+import javax.swing.JFrame;
+import javax.swing.JList;
+import javax.swing.JPanel;
+import javax.swing.JScrollPane;
+
+import dao.Asy_DAO;
 import dao.DAO_Kdh;
+import dto.Asy_DTO;
 import dto.DTO_Kdh;
+import dto.HJDTO;
+import dao.HJDAO;
 
 public class ui_Kdh extends JFrame {
 
-    private JList<String> listbox;
+    /**
+	 * 
+	 */
+	private static final long serialVersionUID = 1L;
+	private JList<String> listbox;
     private DefaultListModel<String> listModel;
     DAO_Kdh dao = new DAO_Kdh();
 
@@ -53,7 +69,7 @@ public class ui_Kdh extends JFrame {
         btnKdh1018.addActionListener(e -> btnFunc());
         btnKdh0222.addActionListener(e -> btnFunc());
         btnPsj.addActionListener(e -> btnFuncPsj());
-        btnJhj.addActionListener(e -> btnFunc());
+        btnJhj.addActionListener(e -> Join());
         btnAsy.addActionListener(e -> btnFunc());
 
         setVisible(true);
@@ -82,6 +98,44 @@ public class ui_Kdh extends JFrame {
             		);
         }
     }
+    
+    public void btnFuncAsy() {
+        listModel.clear();
+        Asy_DAO dao = new Asy_DAO();
+        List<Asy_DTO> deptList = dao.getDepartmentStats();  
+        for (Asy_DTO dto : deptList) {
+            String item = "부서번호: " + dto.getDeptno() +
+                          ", 사원수: " + dto.getEmpCount() +
+                          ", 최고급여: " + dto.getMaxSal() +
+                          ", 최소급여: " + dto.getMinSal() +
+                          ", 급여합계: " + dto.getTotalSal() +
+                          ", 평균급여: " + dto.getAvgSal();
+            listModel.addElement(item);
+        }
+    }
+
+    public void Join() {
+		listModel.clear();
+		HJDAO dao = new HJDAO();
+		ArrayList<HJDTO> empList = dao.RightOuterJoin();
+		String displayText1 = "Emp No " + " Name " + " MGR No " + " Dept No " + " Job Title ";
+		listModel.addElement(displayText1);
+		String displayText2;
+		for (HJDTO emp : empList) {
+
+			if (emp.getEMPNO() != 0) {
+
+				displayText2 = "  " + emp.getEMPNO() + "    " + emp.getENAME() + "    " + emp.getMGR() + "     "
+						+ emp.getDEPTNO() + "         " + emp.getJOB();
+ 
+			} else {
+				displayText2 = "      " + emp.getEMPNO() + "          " + emp.getENAME() + "           " + emp.getMGR()
+						+ "         " + emp.getDEPTNO() + "           " + emp.getJOB();
+			}
+
+			listModel.addElement(displayText2);
+		}
+	}
 
     public static void main(String[] args) {
         new ui_Kdh();

@@ -9,12 +9,12 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class Asy_DAO {
-    private String url = "jdbc:oracle:thin:@localhost:1521:xe";
-    private String user = "scott";
-    private String password = "tiger";
+    private static String url = "jdbc:oracle:thin:@localhost:1521:xe";
+    private static String user = "scott";
+    private static String password = "tiger";
 
  
-    public List<dto.Asy_DTO> getDepartmentStats() {
+    public static List<dto.Asy_DTO> getDepartmentStats() {
         List<dto.Asy_DTO> deptList = new ArrayList<>(); 
         String query = """
             SELECT deptno, COUNT(*) AS empCount, MAX(sal) AS maxSal,
