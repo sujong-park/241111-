@@ -17,6 +17,9 @@ public class DAO_Kdh {
         return DriverManager.getConnection(URL, USER, PASSWORD);
     }
 
+  
+    //////// 등가조인 쿼리 사용 ///////////////////////////////////////////////////////////////////
+    
     // EMP와 DEPT 테이블을 등가 조인하여 직원과 부서 정보 조회
     public ArrayList<DTO_Kdh> getDeptList() {
         ArrayList<DTO_Kdh> deptList = new ArrayList<>();
