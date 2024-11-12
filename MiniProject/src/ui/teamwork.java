@@ -5,12 +5,15 @@ package ui;
 import java.awt.BorderLayout;
 import java.awt.Dimension;
 import java.awt.FlowLayout;
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
 
+import javax.swing.DefaultListModel;
 import javax.swing.JButton;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
+import javax.swing.JList;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
@@ -18,17 +21,23 @@ import javax.swing.JTextArea;
 import javax.swing.JTextField;
 
 import dao.JHJDAO;
+import dao.PSJDAO;
 import dto.JHJDTO;
+import dto.PSJDTO;
 
 public class teamwork extends JFrame {
 
 	private JPanel mainPanel;
 	private JPanel boardViewPanel;
 	private JPanel boardWritePanel;
+	private JPanel boardRowNumPanel;
 	private JButton deleteButton;
+	
 
 	private Map<String, String> boardContents;
-
+	private DefaultListModel<String> listModel;
+	private PSJDAO dao;
+	
 	public teamwork() {
 		setTitle("게시판 프로그램");
 		setSize(700, 400);
@@ -37,6 +46,8 @@ public class teamwork extends JFrame {
 		boardContents = new HashMap<>();
 
 		setLayout(new BorderLayout());
+		
+		dao = new PSJDAO();
 
 //메인화면구성하기----------------------------------------------------------------------------------------
 		mainPanel = new JPanel();
@@ -45,10 +56,12 @@ public class teamwork extends JFrame {
 		JButton viewBoardButton = new JButton("게시판 조회");
 		JButton writeBoardButton = new JButton("게시판 글쓰기");
 		deleteButton = new JButton("회원 탈퇴");
+		JButton rowNumBoardButton = new JButton("직원 월급 탑 10");
 
 		mainPanel.add(viewBoardButton);
 		mainPanel.add(writeBoardButton);
 		mainPanel.add(deleteButton);
+		mainPanel.add(rowNumBoardButton);
 
 		add(mainPanel, BorderLayout.NORTH);
 
@@ -98,6 +111,14 @@ public class teamwork extends JFrame {
 		viewBoardButton.addActionListener(e -> showBoardView(boardTextArea));
 		writeBoardButton.addActionListener(e -> showBoardWrite());
 		deleteButton.addActionListener(e -> actionPerformed());
+		rowNumBoardButton.addActionListener(e -> rowNumBoardWrite());
+
+// 급여 탑 10 패널 생성---------------------------------------------------------------------------------------------------
+		boardRowNumPanel = new JPanel(new BorderLayout());
+		listModel = new DefaultListModel<>();  // listModel 초기화
+		JList<String> rowNumList = new JList<>(listModel);  // 초기화된 listModel로 JList 생성
+		boardRowNumPanel.add(new JLabel("ALLEN보다 급여가 높은 사원 리스트"), BorderLayout.NORTH);
+		boardRowNumPanel.add(new JScrollPane(rowNumList), BorderLayout.CENTER);
 
 //게시글 작성 버튼 동작 > (서버에 저장)-----------------------------------------------------------------------
 		saveButton.addActionListener(e -> {
@@ -156,6 +177,35 @@ public class teamwork extends JFrame {
 			JOptionPane.showMessageDialog(null, "회원 ID를 입력해야 합니다.", "오류", JOptionPane.ERROR_MESSAGE);
 		}
 	}
+	
+//급여 탑 10 메서드---------------------------------------------------------------------------------
+	public void rowNumBoardWrite() {
+	    listModel = new DefaultListModel<>(); // listModel을 초기화하여 중복 추가 방지
+	    ArrayList<PSJDTO> deptList = dao.getEmpList();
+
+	    int count = 0;
+	    for (PSJDTO dto : deptList) {
+	        if (count >= 10) break;  // 상위 10명의 데이터만 표시
+	        listModel.addElement(
+	            dto.getEmpno() + " | " + dto.getEname() + " | " + dto.getJob() + " | " +
+	            dto.getMgr() + " | " + dto.getHiredate() + " | " + dto.getSal() + " | " +
+	            dto.getComm() + " | " + dto.getDeptno()
+	        );
+	        count++;
+	    }
+
+	    JList<String> rowNumList = new JList<>(listModel);  // JList에 listModel을 설정
+	    boardRowNumPanel.removeAll();  // 이전 컴포넌트 제거
+	    boardRowNumPanel.add(new JLabel("월급이 많은 직원 탑 10"), BorderLayout.NORTH);
+	    boardRowNumPanel.add(new JScrollPane(rowNumList), BorderLayout.CENTER);
+
+	    getContentPane().removeAll();
+	    add(mainPanel, BorderLayout.NORTH);
+	    add(boardRowNumPanel, BorderLayout.CENTER);
+	    revalidate();
+	    repaint();
+	}
+	
 
 //메인---------------------------------------------------------------------------------------------
 	public static void main(String[] args) {
