@@ -17,7 +17,7 @@ import dao.UserDAO;
 public class LoginFrame extends JFrame {
 	private JTextField idField;
 	private JPasswordField passwordField;
-	private JButton loginButton, signupButton, deleteButton; // deleteButton 선언 추가
+	private JButton loginButton, signupButton; // deleteButton 선언 추가
 
 	public LoginFrame() {
 		setTitle("로그인");
@@ -29,15 +29,14 @@ public class LoginFrame extends JFrame {
 		passwordField = new JPasswordField();
 		loginButton = new JButton("로그인");
 		signupButton = new JButton("회원가입");
-		deleteButton = new JButton("회원 삭제"); // 회원 삭제 버튼 추가
+		
 
 		// 각 컴포넌트의 크기를 고정
 		idField.setPreferredSize(new Dimension(150, 30));
 		passwordField.setPreferredSize(new Dimension(150, 30));
 		loginButton.setPreferredSize(new Dimension(100, 30));
 		signupButton.setPreferredSize(new Dimension(100, 30));
-		deleteButton.setPreferredSize(new Dimension(100, 30));
-
+		
 		// 아이디 레이블과 입력 필드를 가로로 배치할 패널
 		JPanel idPanel = new JPanel();
 		idPanel.setLayout(new FlowLayout(FlowLayout.LEFT));
@@ -55,7 +54,7 @@ public class LoginFrame extends JFrame {
 		buttonPanel.setLayout(new FlowLayout(FlowLayout.CENTER)); // 버튼을 중앙에 배치
 		buttonPanel.add(loginButton);
 		buttonPanel.add(signupButton);
-		buttonPanel.add(deleteButton); // 삭제 버튼 추가
+	
 
 		// 전체 패널 생성 및 세로로 배치
 		JPanel panel = new JPanel();
@@ -80,12 +79,7 @@ public class LoginFrame extends JFrame {
 			}
 		});
 
-		deleteButton.addActionListener(new ActionListener() { // deleteButton에 이벤트 추가
-			@Override
-			public void actionPerformed(ActionEvent e) {
-				deleteUser();
-			}
-		});
+	
 	}
 
 	private void login() {
@@ -103,23 +97,7 @@ public class LoginFrame extends JFrame {
 		}
 	}
 
-	private void deleteUser() {
-		String id = idField.getText();
-		String password = new String(passwordField.getPassword());
-
-		// 사용자 확인
-		int confirmation = JOptionPane.showConfirmDialog(this, "정말로 계정을 삭제하시겠습니까?");
-		if (confirmation == JOptionPane.YES_OPTION) {
-			UserDAO userDAO = new UserDAO();
-			if (userDAO.deleteUserAndPosts(id, password)) { // DAO에서 사용자와 게시물 삭제 메서드 호출
-				JOptionPane.showMessageDialog(this, "계정 및 작성된 게시글이 삭제되었습니다.");
-				idField.setText("");
-				passwordField.setText("");
-			} else {
-				JOptionPane.showMessageDialog(this, "계정 삭제 실패", "오류", JOptionPane.ERROR_MESSAGE);
-			}
-		}
-	}
+	
 
 	public static void main(String[] args) {
 		new LoginFrame().setVisible(true);
