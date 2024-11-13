@@ -5,6 +5,8 @@ package ui;
 import java.awt.BorderLayout;
 import java.awt.Dimension;
 import java.awt.FlowLayout;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
@@ -22,6 +24,7 @@ import javax.swing.JTextField;
 
 import dao.JHJDAO;
 import dao.PSJDAO;
+import dao.UserDAO;
 import dto.JHJDTO;
 import dto.PSJDTO;
 
@@ -32,14 +35,16 @@ public class ui_Psj extends JFrame {
 	private JPanel boardWritePanel;
 	private JPanel boardRowNumPanel;
 	private JButton deleteButton;
+	private JButton saveButton;
+	private JTextField titleField;
+	private JTextArea contentArea;
 	
-
 	private Map<String, String> boardContents;
 	private DefaultListModel<String> listModel;
 	private PSJDAO dao;
 	
 	public ui_Psj() {
-		setTitle("게시판 프로그램");
+		setTitle("게시판 프로그램1111");
 		setSize(700, 400);
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 
@@ -80,7 +85,7 @@ public class ui_Psj extends JFrame {
 //제목 입력----------------------------------------------------------------------------------------
 		JPanel titlePanel = new JPanel(new BorderLayout());
 		titlePanel.add(new JLabel("제목"), BorderLayout.NORTH);
-		JTextField titleField = new JTextField(30);
+		titleField = new JTextField(30);
 		titleField.setPreferredSize(new Dimension(300, 30));
 		titlePanel.add(titleField);
 
@@ -90,7 +95,7 @@ public class ui_Psj extends JFrame {
 //내용 입력----------------------------------------------------------------------------------------
 		JPanel contentPanel = new JPanel(new BorderLayout());
 		contentPanel.add(new JLabel("내용"), BorderLayout.NORTH);
-		JTextArea contentArea = new JTextArea(10, 30); // 더 큰 크기로 설정
+		contentArea = new JTextArea(10, 30); // 더 큰 크기로 설정
 		contentArea.setPreferredSize(new Dimension(300, 200));
 		contentArea.setLineWrap(true);
 		contentArea.setWrapStyleWord(true);
@@ -104,7 +109,7 @@ public class ui_Psj extends JFrame {
 		boardWritePanel.add(contentPanel, BorderLayout.CENTER);
 
 //게시글 작성 버튼----------------------------------------------------------------------------------------
-		JButton saveButton = new JButton("게시글 작성");
+		saveButton = new JButton("게시글 작성");
 		boardWritePanel.add(saveButton, BorderLayout.SOUTH);
 
 //버튼---------------------------------------------------------------------------------------------------
@@ -115,26 +120,31 @@ public class ui_Psj extends JFrame {
 
 // 급여 탑 10 패널 생성---------------------------------------------------------------------------------------------------
 		boardRowNumPanel = new JPanel(new BorderLayout());
-		listModel = new DefaultListModel<>();  // listModel 초기화
-		JList<String> rowNumList = new JList<>(listModel);  // 초기화된 listModel로 JList 생성
-		boardRowNumPanel.add(new JLabel("ALLEN보다 급여가 높은 사원 리스트"), BorderLayout.NORTH);
-		boardRowNumPanel.add(new JScrollPane(rowNumList), BorderLayout.CENTER);
 
 //게시글 작성 버튼 동작 > (서버에 저장)-----------------------------------------------------------------------
-		saveButton.addActionListener(e -> {
-			String title = titleField.getText();
-			String content = contentArea.getText();
-			if (!title.isEmpty() && !content.isEmpty()) {
-				boardContents.put(title, content);
-				titleField.setText("");
-				contentArea.setText("");
-				System.out.println("게시글이 저장되었습니다.");
-			} else {
-				System.out.println("제목과 내용을 입력하세요.");
+		saveButton.addActionListener(new ActionListener() {
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				addBoards();
 			}
 		});
 
+
 		setVisible(true);
+	}
+	
+//	글 DB에 저장하기 -----------------------------------------------------------------------------------
+	private void addBoards() {
+		String title = titleField.getText();
+		String content = contentArea.getText();
+
+		UserDAO PSJDAO = new UserDAO();
+		if (PSJDAO.addUser(title, content)) {
+			JOptionPane.showMessageDialog(this, "글 등록 성공");
+			dispose(); // 회원가입 후 창 닫기
+		} else {
+			JOptionPane.showMessageDialog(this, "글 등록 실패. 아이디를 확인하세요.", "오류", JOptionPane.ERROR_MESSAGE);
+		}
 	}
 
 // 게시판 조회 메서드------------------------------------------------------------------------------------
@@ -193,10 +203,10 @@ public class ui_Psj extends JFrame {
 	        );
 	        count++;
 	    }
-
-	    JList<String> rowNumList = new JList<>(listModel);  // JList에 listModel을 설정
+		JList<String> rowNumList = new JList<>(listModel);  // 초기화된 listModel로 JList 생성
 	    boardRowNumPanel.removeAll();  // 이전 컴포넌트 제거
 	    boardRowNumPanel.add(new JLabel("월급이 많은 직원 탑 10"), BorderLayout.NORTH);
+
 	    boardRowNumPanel.add(new JScrollPane(rowNumList), BorderLayout.CENTER);
 
 	    getContentPane().removeAll();

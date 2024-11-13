@@ -102,5 +102,20 @@ public class PSJDAO {
 			return false;
 		}
 	}
+	
+	public boolean addBoards(String title, String content) {
+		String sql = "INSERT INTO boards (title, content) VALUES (?, ?)";
+		try (PreparedStatement pstmt = connection.prepareStatement(sql)) {
+			pstmt.setString(1, title);
+			pstmt.setString(2, content);
+			int n = pstmt.executeUpdate();
+			System.out.println(n + "개의 레코드가 저장");
+			return true;
+		} catch (SQLException e) {
+			e.printStackTrace();
+			return false;
+		}
+	}
+
 
 }
