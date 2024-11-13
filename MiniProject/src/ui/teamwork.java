@@ -37,6 +37,7 @@ public class teamwork extends JFrame {
     private Map<String, String> boardContents;
     private DefaultListModel<String> listModel;
     private PSJDAO dao;
+    private JHJDAO dao2;
 
     public teamwork() {
         setTitle("게시판 프로그램");
@@ -47,6 +48,7 @@ public class teamwork extends JFrame {
         setLayout(new BorderLayout());
 
         dao = new PSJDAO();
+        dao2 = new JHJDAO();
 
         // 메인화면구성하기----------------------------------------------------------------------------------------
         mainPanel = new JPanel();
@@ -197,7 +199,8 @@ public class teamwork extends JFrame {
                 );
                 if (response == JOptionPane.YES_OPTION) {
                     JHJDTO memberToDelete = new JHJDTO(selectedUserId);
-                    boolean result = dao.delete(memberToDelete);  // DB에서 회원 탈퇴 처리
+                    System.out.println(selectedUserId);
+                    boolean result = dao2.delete(memberToDelete);  // DB에서 회원 탈퇴 처리
                     if (result) {
                         JOptionPane.showMessageDialog(memberDialog, "회원 탈퇴가 완료되었습니다.");
                         listModel.removeElement(selectedUserId);  // 리스트에서 해당 회원 삭제
