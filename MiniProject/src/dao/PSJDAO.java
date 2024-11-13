@@ -7,6 +7,7 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
 
+import dto.JHJDTO;
 import dto.PSJDTO;
 
 public class PSJDAO {
@@ -22,28 +23,18 @@ public class PSJDAO {
 	}
 	
 	// emp 테이블에서 특정 조건에 맞는 직원 목록을 가져오는 메서드
-	public ArrayList<PSJDTO> getEmpList() {
-	    ArrayList<PSJDTO> list = new ArrayList<>();
+	public ArrayList<JHJDTO> getAllMembers() {
+	    ArrayList<JHJDTO> list = new ArrayList<>();
 	    String sql =
-	    		"SELECT empno, ename, job, mgr, hiredate, sal, comm, deptno " +
-	             "FROM (SELECT empno, ename, job, mgr, hiredate, sal, comm, deptno " +
-	             "      FROM emp " +
-	             "      ORDER BY sal DESC) " +
-	             "WHERE ROWNUM <= 10";
+	    		"SELECT id " +
+	             "FROM users";
 	    try (PreparedStatement pstmt = connection.prepareStatement(sql);
 	         ResultSet rs = pstmt.executeQuery()) {
 
 	        while (rs.next()) {
-	            int empno = rs.getInt("empno");
-	            String ename = rs.getString("ename");
-	            String job = rs.getString("job");
-	            int mgr = rs.getInt("mgr");
-	            String hiredate = rs.getString("hiredate");
-	            int sal = rs.getInt("sal");
-	            int comm = rs.getInt("comm");
-	            int deptno = rs.getInt("deptno");
+	            String id = rs.getString("id");
 
-	            list.add(new PSJDTO(null, empno, ename, job, mgr, hiredate, sal, comm, deptno));
+	            list.add(new JHJDTO(id));
 	        }
 
 	    } catch (SQLException e) {
@@ -103,4 +94,15 @@ public class PSJDAO {
 		}
 	}
 
-}
+	// PSJDAO.java - 예시
+
+
+	    // 회원 삭제 메서드
+	    public boolean delete(JHJDTO member) {
+	        // 회원 삭제 로직을 작성
+	        return true; // 예시로 성공했다고 가정
+	    }
+	}
+
+	
+
