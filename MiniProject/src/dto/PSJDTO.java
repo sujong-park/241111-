@@ -24,12 +24,6 @@ public class PSJDTO {
 	private String hiredate;
 	private int sal;
 	private int comm;
-	// boardNo
-	// title
-	// content
-	// writer
-	// empno
-	// regdate
 
 	//	boards
 	private int boardNo;

@@ -135,17 +135,26 @@ public class ui_Psj extends JFrame {
 	
 //	글 DB에 저장하기 -----------------------------------------------------------------------------------
 	private void addBoards() {
-		String title = titleField.getText();
-		String content = contentArea.getText();
+	    String title = titleField.getText();
+	    String content = contentArea.getText();
+	    int boardNo = generateBoardNo(); // 새로운 boardNo 생성 메서드
 
-		UserDAO PSJDAO = new UserDAO();
-		if (PSJDAO.addUser(title, content)) {
-			JOptionPane.showMessageDialog(this, "글 등록 성공");
-			dispose(); // 회원가입 후 창 닫기
-		} else {
-			JOptionPane.showMessageDialog(this, "글 등록 실패. 아이디를 확인하세요.", "오류", JOptionPane.ERROR_MESSAGE);
-		}
+	    PSJDAO psjDAO = new PSJDAO();
+
+	    if (psjDAO.addBoards(boardNo, title, content)) {
+	        JOptionPane.showMessageDialog(this, "글 등록 성공");
+	    } else {
+	        JOptionPane.showMessageDialog(this, "글 등록 실패.", "오류", JOptionPane.ERROR_MESSAGE);
+	    }
 	}
+
+	private int generateBoardNo() {
+	    // 새로운 boardNo를 생성하는 메서드 예시, 임시로 랜덤한 값 사용
+	    // 실제로는 데이터베이스 시퀀스 등을 이용해 고유한 번호를 생성하는 것이 좋음
+	    return (int)(Math.random() * 10000);
+	}
+
+
 
 // 게시판 조회 메서드------------------------------------------------------------------------------------
 	private void showBoardView(JTextArea boardTextArea) {
