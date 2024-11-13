@@ -219,32 +219,6 @@ public class teamwork extends JFrame {
         memberDialog.setVisible(true);
     }
 
-    // 급여 탑 10 메서드---------------------------------------------------------------------------------
-//    public void rowNumBoardWrite() {
-//        listModel = new DefaultListModel<>(); // listModel을 초기화하여 중복 추가 방지
-//        ArrayList<JHJDTO> deptList = dao.getEmpList();
-//
-//        int count = 0;
-//        for (JHJDTO dto : deptList) {
-//            if (count >= 10) break;  // 상위 10명의 데이터만 표시
-//            listModel.addElement(
-//                dto.getId()
-//            );
-//            count++;
-//        }
-//
-//        JList<String> rowNumList = new JList<>(listModel);  // JList에 listModel을 설정
-//        boardRowNumPanel.removeAll();  // 이전 컴포넌트 제거
-//        boardRowNumPanel.add(new JLabel("월급이 많은 직원 탑 10"), BorderLayout.NORTH);
-//        boardRowNumPanel.add(new JScrollPane(rowNumList), BorderLayout.CENTER);
-//
-//        getContentPane().removeAll();
-//        add(mainPanel, BorderLayout.NORTH);
-//        add(boardRowNumPanel, BorderLayout.CENTER);
-//        revalidate();
-//        repaint();
-//    }
-
     public static void main(String[] args) {
         new teamwork();
     }
