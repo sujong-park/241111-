@@ -1,9 +1,6 @@
 package dto;
 
 
-
-
-
 public class PSJDTO {
 	//	member
 	private String id;
