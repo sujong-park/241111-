@@ -103,3 +103,6 @@ public class LoginFrame extends JFrame {
 		new LoginFrame().setVisible(true);
 	}
 }
+
+
+// loginframe 창에서 시작하게 하기
