@@ -1,12 +1,13 @@
-select * from boards;
-drop table boards;
-
-
--- boards 테이블 생성
--- 1. 기존 테이블 삭제 (필요한 경우만)
+---- 1. user 테이블 생성
+CREATE TABLE users (
+    id VARCHAR2(100) PRIMARY KEY,
+    password VARCHAR2(100) NOT NULL
+);
+-- 2. boards 테이블 생성
+-- 기존 테이블 삭제 (필요한 경우만)
 DROP TABLE boards CASCADE CONSTRAINTS;
 
--- 2. boards 테이블 생성
+-- 3. boards 테이블 생성
 CREATE TABLE boards (
     boardNo NUMBER PRIMARY KEY,                       -- 게시물 번호, 기본 키
     title VARCHAR2(100) NOT NULL,                     -- 제목, 필수 입력, 최대 100자
@@ -30,17 +31,3 @@ BEGIN
    SELECT board_seq.NEXTVAL INTO :NEW.boardNo FROM dual;
 END;
 /
---------------------이상 게시글 테이블 db저장---------------------------------------
-
-ALTER TABLE boards
-ADD CONSTRAINT fk_writer 
-FOREIGN KEY (writer) 
-REFERENCES users(id) 
-ON DELETE CASCADE;
-
-CREATE TABLE users (
-    id VARCHAR2(100) PRIMARY KEY,
-    password VARCHAR2(100) NOT NULL
-);
-
-select * from users;
